@@ -1,5 +1,106 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="fragments/header :: main-head"></head>
-  <body th:replace="fragments/body :: main-body"></body>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="layout/basic">
+
+  <th:block layout:fragment="title">
+    <title>writing page</title>
+  </th:block>
+
+  <th:block layout:fragment="content">
+    <div class="page_tits">
+      <h3>post management</h3>
+      <p class="path">
+        <strong>current location:</strong>
+        <span>post management</span>
+        <span>list</span>
+        <span>writing</span>
+      </p> <!-- path -->
+    </div><!-- page_tits -->
+
+    <div class="content">
+      <section>
+        <form id="saveForm" method="post" autocomplete="off">
+          <!-- if it is editing post, it's the number which is delivered to server(PK) -->
+          <input type="hidden" id="id" name="id" th:if="${post != null}" th:value="${post.id}" />
+
+          <!-- Whether to forward announcements to the server  -->
+          <input type="hidden" id="noticeYn" name="noticeYn" />
+          <table class="tb tb_brow">
+            <colgroup>
+              <col style="width:15%;" />
+              <col style="width:35%;" />
+              <col style="width:15%;" />
+              <col style="width:35%;" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <th scope="row">announcement</th>
+                <td>
+                  <span class="chkbox"><input type="checkbox" id="isNotice" name="isNotice" class="chk"/>
+                    <i></i><label for="isNotice">setting</label>
+                  </span>
+                </td>
+                <th scope="row">registration date</th>
+                <td colspan="3"><input type="text" id="createdDate" name="createdDate" readonly/></td>
+              </tr>
+
+              <tr>
+                <th>title <span class="es">required input</span></th>
+                <td colspan="3">
+                  <input type="text" id="title" name="title" maxlength="50" placeholder="type the title" />
+                </td>
+              </tr>
+              <tr>
+                <th>name <span class="es">required input</span></th>
+                <td colspan="3">
+                  <input type="text" id="writer" name="writer" maxlength="20" placeholder="type your name" />
+                </td>
+              </tr>
+              <tr>
+                <th>content <span class="es">required input</span></th>
+                <td colspan="3">
+                  <textarea id="content" name="content" cols="50" rows="10" placeholder="type the content"></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table><!-- tb tb_row -->
+        </form>
+
+        <p class="btn_set">
+          <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">save</button>
+          <a th:href="@{/post/list.do}" class-btns btn_bdr3 btn_mid>back</a>
+        </p>
+      </section>
+    </div><!-- content -->
+  </th:block>
+
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+    /* <![CDATA[*/
+      window.onload = () =>{
+      initCreatedDate(); }
+
+      //reset registration date
+      function initCreatedDate() {
+        document.getElementById('createdDate').value = dayjs().format('YYYY-MM-DD');
+      }
+
+      //save(edit) post
+      function savePost() {
+        const form = document.getElementById('saveForm');
+        const fields = [form.title, form.writer, form.content];
+        const fieldNames = ['title', 'name', 'content'];
+
+        for (let i=0, len=fields.length; i <len; i++){
+          isValid(fields[i], fieldNames[i]);
+        }
+
+        document.getElementById('saveBtn').disabled = true;
+        form.noticeYn.value = form.inNotice.checked;
+        form.action = [[ ${post == null } ]] ? '/post/save.do' : '/post/update.do';
+        form.submit();
+      }
+    /*]]>*/
+    </script>
+  </th:block>
 </html>
