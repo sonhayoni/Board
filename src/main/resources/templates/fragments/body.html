@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body th:fragment = "main-body">
+    <div id="adm_wrap">
+      <header>
+        <div class="head">
+          <h1>Happy website</h1>
+          <div class="top_menu">
+            <div class="login_user">
+              <strong>welcome<i class="far fa-user-circle"></i>yoni</strong>
+            </div> <!-- login_user -->
+          </div> <!-- top_menu -->
+        </div> <!-- head -->
+      </header>
+
+      <div id="container">
+        <div class="menu_toggle"><span></span></div>
+        <!-- /*left side*/ -->
+        <div class="lcontent">
+          <!-- /*menu*/ -->
+          <nav>
+            <ul>
+              <li class="has_sub">
+                <a href="javascript:void(0);" class="on">
+                  <span>page management</span>
+                </a>
+                <ul>
+                  <li><a href="/post/list.do" class="on">list</a></li>
+                  <li><a href="/post/list.do" class="on">gallery</a></li>
+                  <li><a href="/post/list.do" class="on">calender</a></li>
+                </ul>
+              </li> <!-- has_sub -->
+              <li><a href="javascript: alert('processing')"><span>member management</span></a></li>
+            </ul>
+          </nav>
+        </div><!-- lcontent -->
+
+        <!-- /*right side*/ -->
+        <div class="rcontent">
+          <!-- /*page content*/ -->
+          <th:block layout:fragment="content"></th:block>
+        </div><!-- rcontent -->
+      </div><!-- container -->
+      <footer>Copyright(c)names.All rights reserved.</footer>
+    </div><!-- adm_wrap -->
+
+    <script th:src="@{/js/function.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+    <th:block layout:fragment="script"></th:block>
+</body>
+</html>
